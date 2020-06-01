@@ -1,0 +1,41 @@
+version: '3'
+services:
+  indy-pool:
+    container_name: protocol-indy-pool
+    build:
+      context: .
+      dockerfile: docker/indy-pool.dockerfile
+      args:
+        pool_ip: 10.0.0.10
+    ports:
+      - "9701-9709:9701-9709"
+    networks:
+      agent_net:
+        ipv4_address: 10.0.0.10
+
+  protocol-agent:
+    build:
+      context: .
+      dockerfile: docker/protocol.dockerfile
+    command: bash
+    tty: true
+    container_name: protocol-agent
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "7000:7000"
+    depends_on:
+      - "indy-pool"
+    links:
+      - "indy-pool"
+    networks:
+      agent_net:
+        ipv4_address: 10.0.0.11
+
+networks:
+  agent_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
