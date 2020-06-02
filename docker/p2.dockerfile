@@ -44,14 +44,20 @@ RUN cd /tmp && \
        make install && \
        rm -rf /tmp/libsodium-1.0.14
 
-# for dotnet
+# for dotnet and nodejs
 RUN wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get install apt-transport-https
 RUN apt-get update && \
-    apt-get install -y dotnet-sdk-3.1 && \
-    apt-get install -y nodejs && \
-    apt-get install -y npm
+    apt-get install -y dotnet-sdk-3.1
+RUN curl -sL https://deb.nodesource.com/setup_11.x  | bash -
+RUN apt-get -y install nodejs
+# WORKDIR /app
+# RUN dotnet clean && dotnet build
+# WORKDIR /app/service
+# rm -rf node_modules
+# EDGE_USE_CORECLR=1 npm install
+
 
 # might want to setup a nodejs server at some point
 CMD [ "bash", "npm", "run", "start:debug" ]
