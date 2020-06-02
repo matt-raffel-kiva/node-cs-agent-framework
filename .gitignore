@@ -14,7 +14,7 @@
 .idea
 
 #built files
-*.js
+build/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

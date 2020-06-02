@@ -16,7 +16,7 @@ services:
   protocol-agent:
     build:
       context: .
-      dockerfile: docker/p2.dockerfile
+      dockerfile: docker/p3.dockerfile
     command: bash
     tty: true
     container_name: protocol-agent
